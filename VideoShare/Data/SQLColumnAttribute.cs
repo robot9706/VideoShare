@@ -22,11 +22,27 @@ namespace VideoShare.Data
             private set;
         }
 
-        public SQLColumnAttribute(int index, string name, bool isKey = false)
+        public string AutoIncrementSequenceName
+        {
+            get;
+            private set;
+        }
+
+        public bool IsAutoIncrement
+        {
+            get
+            {
+                return (!string.IsNullOrEmpty(AutoIncrementSequenceName));
+            }
+        }
+
+        public SQLColumnAttribute(int index, string name, bool isKey = false, string autoIncrementSequence = null)
         {
             Index = index;
             Name = name;
-            IsKey = IsKey;
+            IsKey = isKey;
+
+            AutoIncrementSequenceName = autoIncrementSequence;
         }
     }
 }

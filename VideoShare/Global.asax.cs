@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
 using VideoShare.Data;
+using VideoShare.Data.Model;
 
 namespace VideoShare
 {
     public class Global : System.Web.HttpApplication
     {
         public static Database Database;
+        public static bool DatabaseConnected;
 
         protected void Application_Start(object sender, EventArgs e)
         {
             Database = new Database();
-            Database.Open();
+            DatabaseConnected = Database.Open();
         }
 
         protected void Session_Start(object sender, EventArgs e)

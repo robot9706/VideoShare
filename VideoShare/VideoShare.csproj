@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Pages\Debug.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -67,14 +68,24 @@
     <Compile Include="Data\Model\Category.cs" />
     <Compile Include="Data\Model\Playlist.cs" />
     <Compile Include="Data\Model\PlaylistContent.cs" />
+    <Compile Include="Data\Model\TestTable.cs" />
     <Compile Include="Data\Model\User.cs" />
     <Compile Include="Data\Model\Video.cs" />
     <Compile Include="Data\Model\VideoCategory.cs" />
     <Compile Include="Data\Model\VideoComment.cs" />
     <Compile Include="Data\Model\View.cs" />
+    <Compile Include="Data\ObjectParser.cs" />
     <Compile Include="Data\SQLColumnAttribute.cs" />
+    <Compile Include="Data\SQLTable.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Debug.aspx.cs">
+      <DependentUpon>Debug.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Debug.aspx.designer.cs">
+      <DependentUpon>Debug.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
