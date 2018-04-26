@@ -1,0 +1,35 @@
+﻿body {
+    background-color: #131313;
+    padding: 0;
+    margin: 0;
+}
+
+.topBar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #212121;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.hiddenInput {
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.page {
+    padding-top: 50px;
+}
+
+.userBtn {
+    cursor: pointer;
+    text-decoration: none;
+    padding-right: 10px;
+}
+
+a, h1, h2, h3, h4, h5, h6, p, input {
+    color: #A0A0A0;
+}

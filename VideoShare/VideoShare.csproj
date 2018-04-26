@@ -60,7 +60,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Pages\Content\logout.png" />
+    <Content Include="Pages\Content\Main.js" />
+    <Content Include="Pages\Content\md5.js" />
+    <Content Include="Pages\Content\Style.css" />
     <Content Include="Pages\Debug.aspx" />
+    <Content Include="Pages\Index.aspx" />
+    <Content Include="Pages\Login.aspx" />
+    <Content Include="Pages\Services.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -68,13 +75,13 @@
     <Compile Include="Data\Model\Category.cs" />
     <Compile Include="Data\Model\Playlist.cs" />
     <Compile Include="Data\Model\PlaylistContent.cs" />
-    <Compile Include="Data\Model\TestTable.cs" />
     <Compile Include="Data\Model\User.cs" />
     <Compile Include="Data\Model\Video.cs" />
     <Compile Include="Data\Model\VideoCategory.cs" />
     <Compile Include="Data\Model\VideoComment.cs" />
     <Compile Include="Data\Model\View.cs" />
     <Compile Include="Data\ObjectParser.cs" />
+    <Compile Include="Data\Objects\WebsiteUser.cs" />
     <Compile Include="Data\SQLColumnAttribute.cs" />
     <Compile Include="Data\SQLTable.cs" />
     <Compile Include="Global.asax.cs">
@@ -87,9 +94,38 @@
     <Compile Include="Pages\Debug.aspx.designer.cs">
       <DependentUpon>Debug.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Master.Master.cs">
+      <DependentUpon>Master.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Master.Master.designer.cs">
+      <DependentUpon>Master.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Services.aspx.cs">
+      <DependentUpon>Services.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Services.aspx.designer.cs">
+      <DependentUpon>Services.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Pages\Master.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

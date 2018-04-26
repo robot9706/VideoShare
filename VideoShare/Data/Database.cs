@@ -80,6 +80,17 @@ namespace VideoShare.Data
 
             return tables[0].TableName;
         }
+
+        public OracleCommand CreateCommand(string commandText)
+        {
+            OracleCommand command = new OracleCommand();
+
+            command.Connection = _connection;
+            command.CommandText = commandText;
+            command.CommandType = CommandType.Text;
+
+            return command;
+        }
         #endregion
 
         #region Select
@@ -102,6 +113,23 @@ namespace VideoShare.Data
                     {
                         list.Add(parser.ParseItem<T>(reader));
                     }
+                }
+            }
+
+            return list;
+        }
+
+        public List<T> Select<T>(OracleCommand command)
+        {
+            List<T> list = new List<T>();
+
+            ObjectParser parser = GetParser<T>();
+
+            using (OracleDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    list.Add(parser.ParseItem<T>(reader));
                 }
             }
 

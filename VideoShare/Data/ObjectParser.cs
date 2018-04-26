@@ -27,10 +27,12 @@ namespace VideoShare.Data
         {
             _fields = new Dictionary<int, ColumnInfo>();
 
-            FieldInfo[] properties = type.GetFields();
+            FieldInfo[] fields = type.GetFields();
+            if (fields.Length == 0)
+                throw new Exception("The type doesn't have any fields! " + type.FullName);
 
             SQLColumnAttribute attribute;
-            foreach (FieldInfo p in properties)
+            foreach (FieldInfo p in fields)
             {
                 attribute = GetAttribute<SQLColumnAttribute>(p);
 

@@ -5,15 +5,18 @@ using System.Web;
 
 namespace VideoShare.Data.Model
 {
+    [SQLTable(Table)]
     public class View
     {
+        public const string Table = "VIEW";
+
         [SQLColumn(0, "VideoID")]
-        public int VideoID { get; set; }
+        public int VideoID;
 
         [SQLColumn(1, "Date")]
-        public DateTime Date { get; set; }
+        public DateTime Date;
 
         [SQLColumn(2, "Views")]
-        public int Views { get; set; }
+        public int Views;
     }
 }

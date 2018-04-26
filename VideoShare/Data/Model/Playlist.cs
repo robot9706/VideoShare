@@ -5,18 +5,21 @@ using System.Web;
 
 namespace VideoShare.Data.Model
 {
+    [SQLTable(Table)]
     public class Playlist
     {
-        [SQLColumn(0, "ID", true)]
-        public int ID { get; set; }
+        public const string Table = "PLAYLIST";
+
+        [SQLColumn(0, "ID", true, "PLAYLIST_ID_SEQ")]
+        public int ID;
 
         [SQLColumn(1, "Creator")]
-        public int Creator { get; set; }
+        public int Creator;
 
         [SQLColumn(2, "CreationDate")]
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationDate;
 
         [SQLColumn(3, "Title")]
-        public string Title { get; set; }
+        public string Title;
     }
 }
