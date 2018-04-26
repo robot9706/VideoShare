@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using VideoShare.Data.Objects;
+using VideoShare.Data.Model;
 
 namespace VideoShare.Pages
 {
@@ -23,7 +23,7 @@ namespace VideoShare.Pages
             }
             else
             {
-                WebsiteUser user = (WebsiteUser)Session["User"];
+                User user = (User)Session["User"];
 
                 UserLogin.Text = "<table style='width: 100%'><tr><td style='text-align: right'><a class='userBtn' href='Profile.aspx'>" + user.DisplayName + "</a></td><td><img src='Content/logout.png' style='cursor:pointer' onclick='logOut()' /></td></tr></table>";
             }

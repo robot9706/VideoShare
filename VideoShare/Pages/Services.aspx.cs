@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using VideoShare.Data.Objects;
+using VideoShare.Data.Model;
 
 namespace VideoShare.Pages
 {
@@ -58,7 +58,7 @@ namespace VideoShare.Pages
                 return;
             }
 
-            WebsiteUser user = WebsiteUser.LoginUser(userName, pwHash);
+            User user = Data.Model.User.FindUser(userName, pwHash);
 
             if (user == null)
             {
@@ -81,7 +81,14 @@ namespace VideoShare.Pages
             string email = request.Params["m"];
             string pwHash = request.Params["p"];
 
-            WebsiteUser user = WebsiteUser.Register(userName, email, pwHash);
+            if (Data.Model.User.GetUser(userName) != null)
+            {
+                Response.Write("A felhasználó név már létezik!");
+
+                return;
+            }
+
+            User user = Data.Model.User.Register(userName, email, pwHash);
 
             if (user != null)
             {
@@ -91,7 +98,7 @@ namespace VideoShare.Pages
             }
             else
             {
-                Response.Write("A felhasználó név már létezik!");
+                Response.Write("Hiba!");
             }
         }
     }

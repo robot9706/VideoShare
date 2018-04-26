@@ -8,8 +8,9 @@ namespace VideoShare.Data.Model
     [SQLTable(Table)]
     public class Video
     {
-        public const string Table = "Video";
+        public const string Table = "VIDEO";
 
+        #region Structure
         [SQLColumn(0, "ID", true, "VIDEO_ID_SEQ")]
         public int ID;
 
@@ -33,5 +34,18 @@ namespace VideoShare.Data.Model
 
         [SQLColumn(7, "Dislikes")]
         public int Dislikes;
+        #endregion
+
+        #region Functions
+        public string GetContentLink()
+        {
+            return "Content/placeholder.mp4";
+        }
+
+        public string GetThumbnailLink()
+        {
+            return "Content/placeholder.png";
+        }
+        #endregion
     }
 }

@@ -63,10 +63,12 @@
     <Content Include="Pages\Content\logout.png" />
     <Content Include="Pages\Content\Main.js" />
     <Content Include="Pages\Content\md5.js" />
+    <Content Include="Pages\Content\placeholder.png" />
     <Content Include="Pages\Content\Style.css" />
     <Content Include="Pages\Debug.aspx" />
     <Content Include="Pages\Index.aspx" />
     <Content Include="Pages\Login.aspx" />
+    <Content Include="Pages\Profile.aspx" />
     <Content Include="Pages\Services.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -81,7 +83,6 @@
     <Compile Include="Data\Model\VideoComment.cs" />
     <Compile Include="Data\Model\View.cs" />
     <Compile Include="Data\ObjectParser.cs" />
-    <Compile Include="Data\Objects\WebsiteUser.cs" />
     <Compile Include="Data\SQLColumnAttribute.cs" />
     <Compile Include="Data\SQLTable.cs" />
     <Compile Include="Global.asax.cs">
@@ -114,6 +115,13 @@
     </Compile>
     <Compile Include="Pages\Master.Master.designer.cs">
       <DependentUpon>Master.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Services.aspx.cs">
       <DependentUpon>Services.aspx</DependentUpon>
