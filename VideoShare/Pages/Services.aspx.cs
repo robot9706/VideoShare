@@ -35,6 +35,15 @@ namespace VideoShare.Pages
                 case "register":
                     Register(req);
                     break;
+                case "upvote":
+                    DoVote(req, true);
+                    break;
+                case "downvote":
+                    DoVote(req, false);
+                    break;
+                case "comment":
+                    DoComment(req);
+                    break;
 
                 default:
                     Response.Write("Unknown function!");
@@ -46,7 +55,8 @@ namespace VideoShare.Pages
         {
             if (request.Params["u"] == null || request.Params["p"] == null)
             {
-                Response.StatusCode = 500;
+                Response.Write("Hiba!");
+                return;
             }
 
             string userName = request.Params["u"];
@@ -74,7 +84,8 @@ namespace VideoShare.Pages
         {
             if (request.Params["u"] == null || request.Params["p"] == null || request.Params["m"] == null)
             {
-                Response.StatusCode = 500;
+                Response.Write("Hiba!");
+                return;
             }
 
             string userName = request.Params["u"];
@@ -94,6 +105,99 @@ namespace VideoShare.Pages
             {
                 Session["User"] = user;
 
+                Response.Write("ok");
+            }
+            else
+            {
+                Response.Write("Hiba!");
+            }
+        }
+
+        private void DoVote(HttpRequest request, bool up)
+        {
+            if (request.Params["v"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            int id = 0;
+            if (!Int32.TryParse(request.Params["v"], out id))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Video v = Video.FindVideo(id);
+            if (v == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            bool ok = false;
+            if (up)
+            {
+                ok = v.Upvote();
+            }
+            else
+            {
+                ok = v.Downvote();
+            }
+
+            if (ok)
+            {
+                Response.Write("ok");
+            }
+            else
+            {
+                Response.Write("Hiba!");
+            }
+        }
+
+        private void DoComment(HttpRequest request)
+        {
+            if (request.Params["v"] == null || request.Params["c"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            if (Session["User"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            int id = 0;
+            if (!Int32.TryParse(request.Params["v"], out id))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Video v = Video.FindVideo(id);
+            if (v == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            string comment = request.Params["c"];
+            if (string.IsNullOrEmpty(comment))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            VideoComment newComment = new Data.Model.VideoComment();
+            newComment.Comment = comment;
+            newComment.Date = DateTime.Now;
+            newComment.VideoID = id;
+            newComment.UserID = ((User)Session["User"]).ID;
+
+            if (Global.Database.Insert<VideoComment>(newComment))
+            {
                 Response.Write("ok");
             }
             else

@@ -10,10 +10,10 @@ namespace VideoShare.Data.Model
     {
         public const string Table = "PLAYLISTCONTENT";
 
-        [SQLColumn(0, "PlaylistID")]
+        [SQLColumn(0, "PLAYLISTID")]
         public int PlaylistID;
 
-        [SQLColumn(1, "VideoID")]
+        [SQLColumn(1, "VIDEOID")]
         public int VideoID;
     }
 }

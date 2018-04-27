@@ -100,7 +100,7 @@ namespace VideoShare.Data
 
             foreach (KeyValuePair<int, ColumnInfo> pair in _fields)
             {
-                columns.Add(pair.Value.Name);
+                columns.Add("\"" + pair.Value.Name + "\"");
 
                 if (pair.Value.IsAutoIncrement)
                 {
@@ -134,7 +134,7 @@ namespace VideoShare.Data
 
                 command.Parameters.Add(new OracleParameter("k" + pair.Value.Name, fieldValue));
 
-                conditionList.Add(pair.Value.Name + "=:k" + pair.Value.Name);
+                conditionList.Add("\"" + pair.Value.Name + "\"=:k" + pair.Value.Name);
             }
 
             return String.Join(" and ", conditionList);
@@ -153,7 +153,7 @@ namespace VideoShare.Data
 
                 command.Parameters.Add(new OracleParameter("v" + pair.Value.Name, fieldValue));
 
-                valueList.Add(pair.Value.Name + "=:v" + pair.Value.Name);
+                valueList.Add("\"" + pair.Value.Name + "\"=:v" + pair.Value.Name);
             }
 
             return String.Join(", ", valueList);
@@ -174,7 +174,7 @@ namespace VideoShare.Data
 
                 command.Parameters.Add(new OracleParameter("c" + pair.Value.Name, fieldValue));
 
-                valueList.Add(pair.Value.Name + "=:c" + pair.Value.Name);
+                valueList.Add("\"" + pair.Value.Name + "\"=:c" + pair.Value.Name);
             }
 
             return String.Join(", ", valueList);

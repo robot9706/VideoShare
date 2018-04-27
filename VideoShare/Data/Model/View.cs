@@ -10,7 +10,7 @@ namespace VideoShare.Data.Model
     {
         public const string Table = "VIEW";
 
-        [SQLColumn(0, "VideoID")]
+        [SQLColumn(0, "VIDEOID")]
         public int VideoID;
 
         [SQLColumn(1, "Date")]

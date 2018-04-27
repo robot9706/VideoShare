@@ -60,16 +60,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Pages\Content\downvote.png" />
     <Content Include="Pages\Content\logout.png" />
     <Content Include="Pages\Content\Main.js" />
     <Content Include="Pages\Content\md5.js" />
     <Content Include="Pages\Content\placeholder.png" />
     <Content Include="Pages\Content\Style.css" />
+    <Content Include="Pages\Content\upvote.png" />
     <Content Include="Pages\Debug.aspx" />
     <Content Include="Pages\Index.aspx" />
     <Content Include="Pages\Login.aspx" />
     <Content Include="Pages\Profile.aspx" />
     <Content Include="Pages\Services.aspx" />
+    <Content Include="Pages\Watch.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +126,7 @@
     <Compile Include="Pages\Profile.aspx.designer.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Renderers\VideoHTMLRenderer.cs" />
     <Compile Include="Pages\Services.aspx.cs">
       <DependentUpon>Services.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -130,10 +134,18 @@
     <Compile Include="Pages\Services.aspx.designer.cs">
       <DependentUpon>Services.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Watch.aspx.cs">
+      <DependentUpon>Watch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Watch.aspx.designer.cs">
+      <DependentUpon>Watch.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Pages\Master.Master" />
+    <Content Include="Pages\Content\placeholder.pdn" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -141,7 +153,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

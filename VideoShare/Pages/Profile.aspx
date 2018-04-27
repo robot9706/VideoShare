@@ -22,12 +22,7 @@
             <tr style="height: 400px">
                 <td style="width: 70%">
                     <div class="profilePanel">
-                        <div style="width: 800px; margin-left: auto; margin-right: auto; padding-bottom: 10px">
-                            <div style="background-color: #323232">
-                                <asp:Literal runat="server" ID="LatestVideoBox"></asp:Literal>
-                            </div>
-                            <asp:Literal runat="server" ID="LatestVideoTitleBox"></asp:Literal>
-                        </div>
+                        <asp:Literal runat="server" ID="LatestVideoBox"></asp:Literal>
                     </div>
                 </td>
                 <td style="width: 30%">

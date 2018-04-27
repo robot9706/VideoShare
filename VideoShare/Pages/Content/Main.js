@@ -53,7 +53,8 @@ function login(username, pwHash, loginOk, loginError)
     request.send(null);
 }
 
-function register(username, pwHash, email, regOk, regError) {
+function register(username, pwHash, email, regOk, regError)
+{
     var request = new XMLHttpRequest();
     request.onload = function () {
         if (this.readyState == 4) {
@@ -66,6 +67,46 @@ function register(username, pwHash, email, regOk, regError) {
     }
 
     var url = encodeURI("Services.aspx?f=register&u=" + username + "&p=" + pwHash + "&m=" + email);
+
+    request.open("POST", url, true);
+    request.send(null);
+}
+
+var voted = false;
+
+function doVote(mode, video)
+{
+    if (voted)
+        return;
+
+    voted = true;
+
+    var request = new XMLHttpRequest();
+
+    var url = encodeURI("Services.aspx?f=" + mode + "&v=" + video);
+
+    request.open("POST", url, true);
+    request.send(null);
+}
+
+function doComment(vid)
+{
+    var c = document.getElementById('commentText').value;
+    if (c == "" || c.length == 0)
+        return;
+
+    var request = new XMLHttpRequest();
+    request.onload = function () {
+        if (this.readyState == 4) {
+            if (this.responseText == "ok") {
+                window.location.reload();
+            } else {
+                alert(this.responseText);
+            }
+        }
+    }
+
+    var url = encodeURI("Services.aspx?f=comment&v=" + vid + "&c=" + c);
 
     request.open("POST", url, true);
     request.send(null);

@@ -13,22 +13,22 @@ namespace VideoShare.Data.Model
         [SQLColumn(0, "ID", true, "USER_ID_SEQ")]
         public int ID;
 
-        [SQLColumn(1, "Username")]
+        [SQLColumn(1, "USERNAME")]
         public string Username;
 
-        [SQLColumn(2, "Email")]
+        [SQLColumn(2, "EMAIL")]
         public string Email;
 
-        [SQLColumn(3, "PasswordHash")]
+        [SQLColumn(3, "PASSWORDHASH")]
         public string PasswordHash;
 
-        [SQLColumn(4, "DisplayName")]
+        [SQLColumn(4, "DISPLAYNAME")]
         public string DisplayName;
 
-        [SQLColumn(5, "RegistrationDate")]
+        [SQLColumn(5, "REGISTRATIONDATE")]
         public DateTime RegistrationDate;
 
-        [SQLColumn(6, "Info")]
+        [SQLColumn(6, "INFO")]
         public string Info;
         #endregion
 
@@ -58,6 +58,23 @@ namespace VideoShare.Data.Model
             using (OracleCommand command = Global.Database.CreateCommand(SQL_CheckName))
             {
                 command.Parameters.Add("uname", username);
+
+                List<User> users = Global.Database.Select<User>(command);
+
+                if (users.Count == 1)
+                    return users[0];
+
+                return null;
+            }
+        }
+
+        private const string SQL_GetByID = "select * from \"" + Table + "\" where ID=:unid";
+
+        public static User GetUserByID(int id)
+        {
+            using (OracleCommand command = Global.Database.CreateCommand(SQL_GetByID))
+            {
+                command.Parameters.Add("unid", id);
 
                 List<User> users = Global.Database.Select<User>(command);
 

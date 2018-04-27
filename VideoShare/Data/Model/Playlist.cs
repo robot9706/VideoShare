@@ -13,13 +13,13 @@ namespace VideoShare.Data.Model
         [SQLColumn(0, "ID", true, "PLAYLIST_ID_SEQ")]
         public int ID;
 
-        [SQLColumn(1, "Creator")]
+        [SQLColumn(1, "CREATOR")]
         public int Creator;
 
-        [SQLColumn(2, "CreationDate")]
+        [SQLColumn(2, "CREATIONDATE")]
         public DateTime CreationDate;
 
-        [SQLColumn(3, "Title")]
+        [SQLColumn(3, "TITLE")]
         public string Title;
     }
 }

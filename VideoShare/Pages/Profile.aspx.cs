@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using VideoShare.Data.Model;
+using VideoShare.Pages.Renderers;
 
 namespace VideoShare.Pages
 {
@@ -52,8 +53,9 @@ namespace VideoShare.Pages
 
             if (videos.Count > 0)
             {
-                LatestVideoBox.Text = "<video width='800' height='480' controls='controls'><source='" + videos[0].GetContentLink() + "' type='video/mp4' /></video>";
-                LatestVideoTitleBox.Text = "<a href='Video.aspx?v=" + videos[0].ID.ToString() + "' class='profileText'>" + videos[0].Title + "</a>";
+                StringBuilder latestVideo = new StringBuilder();
+                VideoHTMLRenderer.RenderBigView(videos[0], latestVideo, (Session["User"] != null));
+                LatestVideoBox.Text = latestVideo.ToString();
 
                 StringBuilder allVideosBuilder = new StringBuilder();
 
@@ -75,7 +77,11 @@ namespace VideoShare.Pages
                                 }
                                 else
                                 {
-                                    allVideosBuilder.Append("<td style='width: 16%'><a href='Video.aspx?v=" + videos[x].ID.ToString() + "'><img style='cursor: pointer' src=\"" + videos[x].GetThumbnailLink() + "\" /></a><a href='Video.aspx?v=" + videos[x].ID.ToString() + "'>" + videos[x].Title + "</a></td>");
+                                    allVideosBuilder.Append("<td style='width: 16%'>");
+
+                                    VideoHTMLRenderer.RenderThumbnail(videos[x], allVideosBuilder);
+
+                                    allVideosBuilder.Append("</td>");
                                 }
                             }
                         }
