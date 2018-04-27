@@ -10,10 +10,25 @@ namespace VideoShare
         public static Database Database;
         public static bool DatabaseConnected;
 
+        public static Dictionary<int, string> VideoCategories = new Dictionary<int, string>();
+
         protected void Application_Start(object sender, EventArgs e)
         {
             Database = new Database();
             DatabaseConnected = Database.Open();
+
+            if (DatabaseConnected)
+            {
+                List<Category> cList = Database.SelectAll<Category>();
+
+                foreach (Category c in cList)
+                {
+                    if (VideoCategories.ContainsKey(c.ID))
+                        continue;
+
+                    VideoCategories.Add(c.ID, c.Name);
+                }
+            }
         }
 
         protected void Session_Start(object sender, EventArgs e)

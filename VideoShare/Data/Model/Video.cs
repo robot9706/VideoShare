@@ -123,6 +123,23 @@ namespace VideoShare.Data.Model
                 return (command.ExecuteNonQuery() > 0);
             }
         }
+
+        public string GetCategoriesListed()
+        {
+            List<VideoCategory> catList = VideoCategory.GetForVideo(this);
+
+            List<string> names = new List<string>();
+
+            foreach (VideoCategory cat in catList)
+            {
+                if (!Global.VideoCategories.ContainsKey(cat.CategoryID))
+                    continue;
+
+                names.Add(Global.VideoCategories[cat.CategoryID]);
+            }
+
+            return String.Join(", ", names);
+        }
         #endregion
     }
 }

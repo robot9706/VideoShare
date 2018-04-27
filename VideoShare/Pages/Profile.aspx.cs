@@ -23,7 +23,7 @@ namespace VideoShare.Pages
                 }
                 else
                 {
-                    RenderUser(data, false);
+                    RenderUser(data, (Session["User"] != null && ((User)Session["User"]).ID == data.ID));
                 }
             }
             else
@@ -41,6 +41,7 @@ namespace VideoShare.Pages
 
         private void RenderUser(User user, bool isOwner)
         {
+            //Profile data
             Profile_UserName.Text = user.DisplayName;
             Profile_JoinDate.Text = user.RegistrationDate.ToString("yyyy-MM-dd");
             Profile_Desc.Text = user.Info;
@@ -49,6 +50,7 @@ namespace VideoShare.Pages
             Profile_VideoCount.Text = videosViews.Item1.ToString();
             Profile_ViewCount.Text = videosViews.Item2.ToString();
 
+            //Video list
             List<Video> videos = user.GetVideosDateOrdered();
 
             if (videos.Count > 0)
@@ -95,6 +97,26 @@ namespace VideoShare.Pages
             else
             {
                 LatestVideoBox.Text = "<video width='800' height='480' controls='controls'><source='' type='video/mp4' /></ video>";
+            }
+
+            //Upload popup
+            StringBuilder categoryList = new StringBuilder();
+
+            List<Category> allCategory = Global.Database.SelectAll<Category>();
+
+            categoryList.Append("<div id='catList'>");
+            foreach (Category cat in allCategory)
+            {
+                categoryList.Append("<input id='" + cat.ID.ToString() + "' type='checkbox'><a>" + cat.Name + "</a></input>");
+            }
+            categoryList.Append("</div>");
+
+            CategoryList.Text = categoryList.ToString();
+
+            //Header script
+            if (isOwner)
+            {
+                ExtraScript.Text = "<script>window.onload=function(){document.getElementById('userPanel').style.removeProperty('visibility');}</script>";
             }
         }
     }

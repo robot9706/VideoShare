@@ -26,6 +26,7 @@
             padding-bottom: 15px;
         }
     </style>
+    <asp:Literal runat="server" ID="ExtraScript"></asp:Literal>
 </asp:Content>
 <asp:Content ID="Body" ContentPlaceHolderID="body" runat="server">
     <div style="width: 850px; margin-left: auto; margin-right: auto;">

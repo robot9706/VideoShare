@@ -111,3 +111,12 @@ function doComment(vid)
     request.open("POST", url, true);
     request.send(null);
 }
+
+function onVideoWatched(video)
+{
+    var request = new XMLHttpRequest();
+    var url = encodeURI("Services.aspx?f=view&v=" + video);
+
+    request.open("POST", url, true);
+    request.send(null);
+}

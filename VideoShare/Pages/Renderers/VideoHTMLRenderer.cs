@@ -37,6 +37,7 @@ namespace VideoShare.Pages.Renderers
         {
             int views = video.GetViews();
             User uploader = video.GetUploader();
+            string categoryList = video.GetCategoriesListed();
 
             string upvoteHref = (loggedIn ? "href='javascript:doVote(\"upvote\", " + video.ID.ToString() + ")'" : string.Empty);
             string downvoteHref = (loggedIn ? "href='javascript:doVote(\"downvote\", " + video.ID.ToString() + ")'" : string.Empty);
@@ -63,6 +64,20 @@ namespace VideoShare.Pages.Renderers
             builder.Append("<td style='width: 80%'><a>Feltöltés: " + video.UploadTime.ToString("yyyy-MM-dd HH:mm:ss") + "</a></td>");
             builder.Append("<td style='width: 20%; text-align: right; vertical-align: center'><a " + upvoteHref + "><img src='Content/upvote.png' /></a><a>" + video.Likes.ToString() + "</a><a " + downvoteHref + "><img src='Content/downvote.png' /></a><a>" + video.Dislikes.ToString() + "</a></td>");
             builder.Append("</tr>");
+
+            if (!string.IsNullOrEmpty(video.Description))
+            {
+                builder.Append("<tr>");
+                builder.Append("<td colspan='2' style='margin-top: 10px'><p>Leírás: " + video.Description + "</p></td>");
+                builder.Append("</tr>");
+            }
+
+            if (!string.IsNullOrEmpty(categoryList))
+            {
+                builder.Append("<tr>");
+                builder.Append("<td colspan='2' style='margin-top: 10px'><p>Kategória: " + categoryList + "</p></td>");
+                builder.Append("</tr>");
+            }
 
             builder.Append("</table>");
 

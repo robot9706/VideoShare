@@ -13,6 +13,15 @@ namespace VideoShare.Pages {
     public partial class Profile {
         
         /// <summary>
+        /// ExtraScript control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ExtraScript;
+        
+        /// <summary>
         /// LatestVideoBox control.
         /// </summary>
         /// <remarks>
@@ -74,5 +83,14 @@ namespace VideoShare.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal VideoList;
+        
+        /// <summary>
+        /// CategoryList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal CategoryList;
     }
 }

@@ -179,5 +179,41 @@ namespace VideoShare.Data
 
             return String.Join(", ", valueList);
         }
+
+        private const string SQL_SequenceQuery = "select {0}.currVal from dual"; //"select \"LAST_NUMBER\" from \"DBA_SEQUENCES\" where \"SEQUENCE_NAME\"=:sn";
+
+        public int GetSequenceValue()
+        {
+            if (!_hasKey)
+                throw new Exception("No key!");
+
+            ColumnInfo? info = null;
+
+            foreach (KeyValuePair<int, ColumnInfo> pair in _fields)
+            {
+                if (!pair.Value.IsKey)
+                    continue;
+
+                if (!pair.Value.IsAutoIncrement)
+                    continue;
+
+                if (info.HasValue)
+                    throw new Exception("Multiple keys!");
+
+                info = pair.Value;
+            }
+
+            if (!info.HasValue)
+                throw new Exception("No key found!");
+
+            using (OracleCommand command = Global.Database.CreateCommand(String.Format(SQL_SequenceQuery, info.Value.AutoIncrementSequence)))
+            {
+                object ret = command.ExecuteScalar();
+                if (ret is DBNull)
+                    return 0;
+
+                return (int)Convert.ChangeType(ret, typeof(Int32));
+            }
+        }
     }
 }

@@ -44,6 +44,12 @@ namespace VideoShare.Pages
                 case "comment":
                     DoComment(req);
                     break;
+                case "upload":
+                    UploadVideo(req);
+                    break;
+                case "view":
+                    OnVideoView(req);
+                    break;
 
                 default:
                     Response.Write("Unknown function!");
@@ -204,6 +210,94 @@ namespace VideoShare.Pages
             {
                 Response.Write("Hiba!");
             }
+        }
+
+        private void UploadVideo(HttpRequest request)
+        {
+            if (request.Params["t"] == null || request.Params["d"] == null || request.Params["c"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            if (Session["User"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            string[] catList = request.Params["c"].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            if(catList.Length == 0)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            string title = request.Params["t"];
+            string desc = request.Params["d"];
+
+            if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(desc))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Video video = new Data.Model.Video();
+            video.Title = title;
+            video.Description = desc;
+            video.Likes = 0;
+            video.Dislikes = 0;
+            video.Length = 50;
+            video.UploadTime = DateTime.Now;
+            video.Uploader = ((User)Session["User"]).ID;
+
+            if (Global.Database.Insert<Video>(video))
+            {
+                int videoID = Global.Database.GetSequenceCurrentID<Video>();
+
+                foreach (string ct in catList)
+                {
+                    int cid;
+                    if(!Int32.TryParse(ct, out cid))
+                    {
+                        continue;
+                    }
+
+                    VideoCategory newCat = new Data.Model.VideoCategory();
+                    newCat.VideoID = videoID;
+                    newCat.CategoryID = cid;
+
+                    Global.Database.Insert<VideoCategory>(newCat);
+                }
+
+                Response.Write("ok");
+            }
+            else
+            {
+                Response.Write("Hiba!");
+            }
+        }
+
+        private void OnVideoView(HttpRequest request)
+        {
+            if (request.Params["v"] == null)
+            {
+                return; //Nincs hiba
+            }
+
+            int id = 0;
+            if (!Int32.TryParse(request.Params["v"], out id))
+            {
+                return;
+            }
+
+            Video v = Video.FindVideo(id);
+            if (v == null)
+            {
+                return;
+            }
+
+            Data.Model.View.AddView(v);
         }
     }
 }

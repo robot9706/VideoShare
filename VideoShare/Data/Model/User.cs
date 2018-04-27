@@ -135,13 +135,26 @@ namespace VideoShare.Data.Model
             return new Tuple<int, int>(videos, views);
         }
 
-        private const string SQL_GetVideos = "select * from \"" + Video.Table + "\" where Uploader = :cuid order by UploadTime";
+        private const string SQL_GetVideos = "select * from \"" + Video.Table + "\" where Uploader = :cuid order by UploadTime desc";
 
         public List<Video> GetVideosDateOrdered()
         {
             using (OracleCommand command = Global.Database.CreateCommand(SQL_GetVideos))
             {
                 command.Parameters.Add("cuid", ID);
+
+                return Global.Database.Select<Video>(command);
+            }
+        }
+
+        private const string SQL_GetVideos2 = "select * from \"" + Video.Table + "\" where Uploader = :cuid and ID!=:nid and rownum<={0} order by UploadTime desc";
+
+        public List<Video> GetVideosDateOrdered(int except, int max)
+        {
+            using (OracleCommand command = Global.Database.CreateCommand(String.Format(SQL_GetVideos2, max)))
+            {
+                command.Parameters.Add("cuid", ID);
+                command.Parameters.Add("nid", except);
 
                 return Global.Database.Select<Video>(command);
             }

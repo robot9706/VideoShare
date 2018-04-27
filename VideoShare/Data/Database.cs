@@ -91,6 +91,13 @@ namespace VideoShare.Data
 
             return command;
         }
+
+        public int GetSequenceCurrentID<T>()
+        {
+            ObjectParser parser = GetParser<T>();
+
+            return parser.GetSequenceValue();
+        }
         #endregion
 
         #region Select
