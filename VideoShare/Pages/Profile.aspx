@@ -18,11 +18,18 @@
         .profilePanel {
             background-color: #434343;
             margin: 10px;
+            border-radius: 5px;
         }
 
         .profileText {
             font-size: large;
             padding-bottom: 15px;
+        }
+
+        .profileTextSmall {
+            font-size: large;
+            padding-bottom: 8px;
+            color: #808080;
         }
     </style>
     <script>
@@ -78,6 +85,53 @@
             request.open("POST", url, true);
             request.send(null);
         }
+
+        function newlist()
+        {
+            var title = document.getElementById('lTitle').value;
+            if (title == null || title.length == 0) {
+                return;
+            }
+
+            var url = "Services.aspx?f=newlist&t=" + title;
+
+            url = encodeURI(url);
+
+            var request = new XMLHttpRequest();
+            request.onload = function () {
+                if (this.readyState == 4) {
+                    if (this.responseText == "ok") {
+                        window.location.reload();
+                    } else {
+                        alert(this.responseText);
+                    }
+                }
+            }
+
+            request.open("POST", url, true);
+            request.send(null);
+        }
+
+        function deleteList(id)
+        {
+            var url = "Services.aspx?f=dellist&l=" + id;
+
+            url = encodeURI(url);
+
+            var request = new XMLHttpRequest();
+            request.onload = function () {
+                if (this.readyState == 4) {
+                    if (this.responseText == "ok") {
+                        window.location.reload();
+                    } else {
+                        alert(this.responseText);
+                    }
+                }
+            }
+
+            request.open("POST", url, true);
+            request.send(null);
+        }
     </script>
     <asp:Literal runat="server" ID="ExtraScript"></asp:Literal>
 </asp:Content>
@@ -101,8 +155,11 @@
                         <a class="profileText">Leírás: <asp:Literal ID="Profile_Desc" runat="server"></asp:Literal></a><br />
                     </div>
                     <div id="userPanel" class="profilePanel" style="padding-top: 20px; padding-bottom: 20px; visibility: hidden">
-                        <div id='commentButton' style='width: 90%; margin-left: auto; margin-right: auto; background-color: #323232; text-align: center; cursor: pointer; border-radius: 5px' onclick="document.getElementById('newVideo').style.removeProperty('visibility');">
+                        <div style='width: 90%; margin-left: auto; margin-right: auto; background-color: #323232; text-align: center; cursor: pointer; border-radius: 5px' onclick="document.getElementById('newVideo').style.removeProperty('visibility');">
                             <a style='padding-top: 5px; padding-bottom: 5px; color: #A0A0A0;'>Új videó feltöltése</a>
+                        </div>
+                        <div style='width: 90%; margin-top: 20px; margin-left: auto; margin-right: auto; background-color: #323232; text-align: center; cursor: pointer; border-radius: 5px' onclick="document.getElementById('newList').style.removeProperty('visibility');">
+                            <a style='padding-top: 5px; padding-bottom: 5px; color: #A0A0A0;'>Új lejátszási lista</a>
                         </div>
                     </div>
                 </td>
@@ -115,8 +172,8 @@
         </table>
     </div>
     <div id="newVideo" style="visibility: hidden;">
-        <div style="position: absolute; left: 0; top: 0; background-color: black; opacity: 0.5; width: 100%; height: 100%;"></div>
-        <div style="position: absolute; left: 0; top: 0; width: 100%; height: 100%">
+        <div style="position: fixed; left: 0; top: 0; background-color: black; opacity: 0.5; width: 100%; height: 100%;"></div>
+        <div style="position: fixed; left: 0; top: 0; width: 100%; height: 100%">
             <div style="width: 50%; margin-left: auto; margin-right: auto; background-color: #434343; border-radius: 5px; margin-top: 100px; opacity: 1; padding: 5px; color: white; text-align: center">
                 <a>Új videó feltöltése</a>
                 <table style="width: 100%">
@@ -153,6 +210,44 @@
                         <td style="text-align: center; padding-top: 10px;">
                             <div onclick="upload()" id="uploadBtn" style="padding: 10px; background-color: #131313; cursor:pointer; width: 50%; margin-left: auto; margin-right: auto; border-radius: 5px">
                                 <a>Feltöltés</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; padding-top: 10px;">
+                            <div onclick="document.getElementById('newVideo').style.visibility='hidden';" style="padding: 10px; background-color: #131313; cursor:pointer; width: 25%; margin-left: auto; margin-right: auto; border-radius: 5px">
+                                <a>Mégse</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="newList" style="visibility: hidden;">
+        <div style="position: fixed; left: 0; top: 0; background-color: black; opacity: 0.5; width: 100%; height: 100%;"></div>
+        <div style="position: fixed; left: 0; top: 0; width: 100%; height: 100%">
+            <div style="width: 35%; margin-left: auto; margin-right: auto; background-color: #434343; border-radius: 5px; margin-top: 100px; opacity: 1; padding: 5px; color: white; text-align: center">
+                <a>Új lejátszási lista</a>
+                <table style="width: 100%">
+                    <tr>
+                        <td>
+                            <div style="background-color: #131313; padding: 10px; border-radius: 5px; width: 75%; margin-left: auto; margin-right: auto;">
+                                <input id="lTitle" type="text" class="hiddenInput" style="width: 100%" placeholder="Cím" required="required" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; padding-top: 10px;">
+                            <div onclick="newlist()" id="newlistBtn" style="padding: 10px; background-color: #131313; cursor:pointer; width: 50%; margin-left: auto; margin-right: auto; border-radius: 5px">
+                                <a>Lérehozás</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; padding-top: 10px;">
+                            <div onclick="document.getElementById('newList').style.visibility='hidden';" style="padding: 10px; background-color: #131313; cursor:pointer; width: 25%; margin-left: auto; margin-right: auto; border-radius: 5px">
+                                <a>Mégse</a>
                             </div>
                         </td>
                     </tr>

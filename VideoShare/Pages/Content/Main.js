@@ -120,3 +120,64 @@ function onVideoWatched(video)
     request.open("POST", url, true);
     request.send(null);
 }
+
+function deleteVideo(id) {
+    var url = "Services.aspx?f=delvid&v=" + id;
+
+    url = encodeURI(url);
+
+    var request = new XMLHttpRequest();
+    request.onload = function () {
+        if (this.readyState == 4) {
+            if (this.responseText == "ok") {
+                window.location.reload();
+            } else {
+                alert(this.responseText);
+            }
+        }
+    }
+
+    request.open("POST", url, true);
+    request.send(null);
+}
+
+function deleteVideoFromList(video, list) {
+    var url = "Services.aspx?f=delvidfromlist&v=" + video + "&l=" + list;
+
+    url = encodeURI(url);
+
+    var request = new XMLHttpRequest();
+    request.onload = function () {
+        if (this.readyState == 4) {
+            if (this.responseText == "ok") {
+                window.location.reload();
+            } else {
+                alert(this.responseText);
+            }
+        }
+    }
+
+    request.open("POST", url, true);
+    request.send(null);
+}
+
+function addVideoToList(video, list)
+{
+    var url = "Services.aspx?f=addvidtolist&v=" + video + "&l=" + list;
+
+    url = encodeURI(url);
+
+    var request = new XMLHttpRequest();
+    request.onload = function () {
+        if (this.readyState == 4) {
+            if (this.responseText == "ok") {
+                window.location.reload();
+            } else {
+                alert(this.responseText);
+            }
+        }
+    }
+
+    request.open("POST", url, true);
+    request.send(null);
+}

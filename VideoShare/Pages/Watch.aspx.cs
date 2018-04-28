@@ -52,7 +52,7 @@ namespace VideoShare.Pages
 
             //HTML rendering
             StringBuilder latestVideo = new StringBuilder();
-            VideoHTMLRenderer.RenderBigView(video, latestVideo, loggedIn);
+            VideoHTMLRenderer.RenderBigView(video, latestVideo, Session["User"] as User);
             VideoView.Text = latestVideo.ToString();
 
             StringBuilder commentBuilder = new StringBuilder();
@@ -105,6 +105,22 @@ namespace VideoShare.Pages
             }
 
             CommentBox.Text = commentBuilder.ToString();
+
+            //Playlist box
+            if (loggedIn)
+            {
+                User user = ((User)Session["User"]);
+                List<Playlist> playlist = user.GetPlaylists();
+
+                StringBuilder playlistButtons = new StringBuilder();
+
+                foreach(Playlist pl in playlist)
+                {
+                    playlistButtons.Append("<tr><td style='text-align: center; padding-top: 10px;'><div onclick='addVideoToList(" + video.ID.ToString() + ", " + pl.ID.ToString() +  ")' style='padding: 10px; background-color: #131313; cursor:pointer; width: 50%; margin-left: auto; margin-right: auto; border-radius: 5px'><a>" +  pl.Title + "</a></div></td></tr>");
+                }
+
+                PlaylistBox.Text = playlistButtons.ToString();
+            }
         }
     }
 }

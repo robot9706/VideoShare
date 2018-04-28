@@ -159,6 +159,18 @@ namespace VideoShare.Data.Model
                 return Global.Database.Select<Video>(command);
             }
         }
+
+        private const string SQL_GetPlaylists = "select * from \"" + Playlist.Table + "\" where Creator = :cuid order by CreationDate desc";
+
+        public List<Playlist> GetPlaylists()
+        {
+            using (OracleCommand command = Global.Database.CreateCommand(SQL_GetPlaylists))
+            {
+                command.Parameters.Add("cuid", ID);
+
+                return Global.Database.Select<Playlist>(command);
+            }
+        }
         #endregion
     }
 }

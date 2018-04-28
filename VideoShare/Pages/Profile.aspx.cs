@@ -53,15 +53,15 @@ namespace VideoShare.Pages
             //Video list
             List<Video> videos = user.GetVideosDateOrdered();
 
+            StringBuilder html = new StringBuilder();
+
             if (videos.Count > 0)
             {
                 StringBuilder latestVideo = new StringBuilder();
-                VideoHTMLRenderer.RenderBigView(videos[0], latestVideo, (Session["User"] != null));
+                VideoHTMLRenderer.RenderBigView(videos[0], latestVideo, Session["User"] as User, false);
                 LatestVideoBox.Text = latestVideo.ToString();
 
-                StringBuilder allVideosBuilder = new StringBuilder();
-
-                allVideosBuilder.Append("<div class='profilePanel' style='padding: 10px'><a class='profileText'>Feltöltések:</a><table style='width: 100%'>");
+                html.Append("<div class='profilePanel' style='padding: 10px'><a class='profileText'>Feltöltések:</a><table style='width: 100%'>");
                 {
                     int rowCount = (int)Math.Ceiling((double)((float)videos.Count / 6));
 
@@ -69,35 +69,75 @@ namespace VideoShare.Pages
                     {
                         int offset = row * 6;
 
-                        allVideosBuilder.Append("<tr>");
+                        html.Append("<tr>");
                         {
                             for (int x = offset; x < offset + 6; x++)
                             {
                                 if (x >= videos.Count)
                                 {
-                                    allVideosBuilder.Append("<td style='width: 16%'></td>");
+                                    html.Append("<td style='width: 16%'></td>");
                                 }
                                 else
                                 {
-                                    allVideosBuilder.Append("<td style='width: 16%'>");
+                                    html.Append("<td style='width: 16%'>");
 
-                                    VideoHTMLRenderer.RenderThumbnail(videos[x], allVideosBuilder);
+                                    VideoHTMLRenderer.RenderThumbnail(videos[x], html, isOwner);
 
-                                    allVideosBuilder.Append("</td>");
+                                    html.Append("</td>");
                                 }
                             }
                         }
-                        allVideosBuilder.Append("</tr>");
+                        html.Append("</tr>");
                     }
                 }
-                allVideosBuilder.Append("</table></div>");
-
-                VideoList.Text = allVideosBuilder.ToString();
+                html.Append("</table></div>");
             }
             else
             {
                 LatestVideoBox.Text = "<video width='800' height='480' controls='controls'><source='' type='video/mp4' /></ video>";
             }
+
+            //Playlists
+            List<Playlist> lists = user.GetPlaylists();
+
+            foreach (Playlist list in lists)
+            {
+                List<Video> listVideos = list.GetVideos();
+
+                html.Append("<div class='profilePanel' style='padding: 10px'><a class='profileText'>" + list.Title + "</a><a class='profileTextSmall' style='margin-left: 10px'>Létrehozva: " + list.CreationDate.ToString("yyyy-MM-dd HH:mm:ss") + ", Videók: " + listVideos.Count.ToString() + "</a><div style='background-color:#323232; float:right; padding: 2px; cursor: pointer' onclick='deleteList(" + list.ID.ToString() + ")'><a>Törlés</a></div><table style='width: 100%'>");
+                {
+                    int rowCount = (int)Math.Ceiling((double)((float)listVideos.Count / 6));
+
+                    for (int row = 0; row < rowCount; row++)
+                    {
+                        int offset = row * 6;
+
+                        html.Append("<tr>");
+                        {
+                            for (int x = offset; x < offset + 6; x++)
+                            {
+                                if (x >= listVideos.Count)
+                                {
+                                    html.Append("<td style='width: 16%'></td>");
+                                }
+                                else
+                                {
+                                    html.Append("<td style='width: 16%'>");
+
+                                    VideoHTMLRenderer.RenderThumbnail(listVideos[x], html, isOwner, list);
+
+                                    html.Append("</td>");
+                                }
+                            }
+                        }
+                        html.Append("</tr>");
+                    }
+                }
+                html.Append("</table></div>");
+            }
+
+            //Output the rendered text
+            VideoList.Text = html.ToString();
 
             //Upload popup
             StringBuilder categoryList = new StringBuilder();

@@ -140,6 +140,44 @@ namespace VideoShare.Data.Model
 
             return String.Join(", ", names);
         }
+
+        private const string SQL_Delete1 = "delete from \"" + PlaylistContent.Table + "\" where VideoID=:vdid";
+        private const string SQL_Delete2 = "delete from \"" + VideoCategory.Table + "\" where VideoID=:vdid";
+        private const string SQL_Delete3 = "delete from \"" + VideoComment.Table + "\" where VideoID=:vdid";
+        private const string SQL_Delete4 = "delete from \"" + View.Table + "\" where VideoID=:vdid";
+
+        public void Delete()
+        {
+            using (OracleCommand command = Global.Database.CreateCommand(SQL_Delete1))
+            {
+                command.Parameters.Add("vdid", ID);
+
+                command.ExecuteNonQuery();
+            }
+
+            using (OracleCommand command = Global.Database.CreateCommand(SQL_Delete2))
+            {
+                command.Parameters.Add("vdid", ID);
+
+                command.ExecuteNonQuery();
+            }
+
+            using (OracleCommand command = Global.Database.CreateCommand(SQL_Delete3))
+            {
+                command.Parameters.Add("vdid", ID);
+
+                command.ExecuteNonQuery();
+            }
+
+            using (OracleCommand command = Global.Database.CreateCommand(SQL_Delete4))
+            {
+                command.Parameters.Add("vdid", ID);
+
+                command.ExecuteNonQuery();
+            }
+
+            Global.Database.Delete<Video>(this);
+        }
         #endregion
     }
 }

@@ -50,6 +50,21 @@ namespace VideoShare.Pages
                 case "view":
                     OnVideoView(req);
                     break;
+                case "newlist":
+                    CreatePlaylist(req);
+                    break;
+                case "dellist":
+                    DeletePlaylist(req);
+                    break;
+                case "delvid":
+                    DeleteVideo(req);
+                    break;
+                case "delvidfromlist":
+                    DeleteVideoFromList(req);
+                    break;
+                case "addvidtolist":
+                    AddVideoToList(req);
+                    break;
 
                 default:
                     Response.Write("Unknown function!");
@@ -298,6 +313,186 @@ namespace VideoShare.Pages
             }
 
             Data.Model.View.AddView(v);
+        }
+
+        private void CreatePlaylist(HttpRequest req)
+        {
+            if (req.Params["t"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            if (Session["User"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(req.Params["t"]))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Playlist pl = new Playlist();
+            pl.Title = req.Params["t"];
+            pl.Creator = ((User)Session["User"]).ID;
+            pl.CreationDate = DateTime.Now;
+
+            if (Global.Database.Insert<Playlist>(pl))
+            {
+                Response.Write("ok");
+            }
+            else
+            {
+                Response.Write("Hiba!");
+            }
+        }
+
+        private void DeletePlaylist(HttpRequest req)
+        {
+            if (req.Params["l"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            int id;
+            if (!Int32.TryParse(req.Params["l"], out id))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Playlist list = Playlist.Find(id);
+            if (list == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            list.Delete();
+
+            Response.Write("ok");
+        }
+
+        private void DeleteVideo(HttpRequest req)
+        {
+            if (req.Params["v"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            int id;
+            if (!Int32.TryParse(req.Params["v"], out id))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Video video = Video.FindVideo(id);
+            if (video == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            video.Delete();
+
+            Response.Write("ok");
+        }
+
+        private void DeleteVideoFromList(HttpRequest req)
+        {
+            if (req.Params["v"] == null || req.Params["l"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            int vid;
+            if (!Int32.TryParse(req.Params["v"], out vid))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Video video = Video.FindVideo(vid);
+            if (video == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            int lid;
+            if (!Int32.TryParse(req.Params["l"], out lid))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Playlist list = Playlist.Find(lid);
+            if (list == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            list.DeleteFromList(video);
+
+            Response.Write("ok");
+        }
+
+        private void AddVideoToList(HttpRequest req)
+        {
+            if (req.Params["v"] == null || req.Params["l"] == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            int vid;
+            if (!Int32.TryParse(req.Params["v"], out vid))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Video video = Video.FindVideo(vid);
+            if (video == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            int lid;
+            if (!Int32.TryParse(req.Params["l"], out lid))
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            Playlist list = Playlist.Find(lid);
+            if (list == null)
+            {
+                Response.Write("Hiba!");
+                return;
+            }
+
+            PlaylistContent content = new Data.Model.PlaylistContent();
+            content.PlaylistID = list.ID;
+            content.VideoID = video.ID;
+
+            if (Global.Database.Insert<PlaylistContent>(content))
+            {
+                Response.Write("ok");
+            }
+            else
+            {
+                Response.Write("Hiba!");
+            }
         }
     }
 }

@@ -9,15 +9,18 @@ namespace VideoShare.Pages.Renderers
 {
     public class VideoHTMLRenderer
     {
-        public static void RenderThumbnail(Video video, StringBuilder builder)
+        public static void RenderThumbnail(Video video, StringBuilder builder, bool editable = false, Playlist list = null)
         {
             int views = video.GetViews();
             User uploader = video.GetUploader();
 
+            string deleteFunction = ((list != null) ? "deleteVideoFromList(" + video.ID.ToString() + ", " + list.ID.ToString() + ")" : "deleteVideo(" + video.ID.ToString() + ")");
+            string deleteButton = (editable ? "<a style='position: absolute;left:10px;top:5px;cursor:pointer' onclick='" + deleteFunction + "'>X</a>" : string.Empty);
+
             builder.Append("<div style='width: 185px; margin-left:auto; margin-right: auto'><table style='width: 100%'>");
 
             builder.Append("<tr>");
-            builder.Append("<td colspan='2' style='text-align: center'><a href='Watch.aspx?v=" + video.ID.ToString() + "'><img style='cursor: pointer' src=\"" + video.GetThumbnailLink() + "\" /></a></td>");
+            builder.Append("<td colspan='2' style='text-align: center'><a href='Watch.aspx?v=" + video.ID.ToString() + "'><div style='position: relative'><img style='cursor: pointer' src=\"" + video.GetThumbnailLink() + "\" />" + deleteButton + "</div></td>");
             builder.Append("</tr>");
 
             builder.Append("<tr>");
@@ -33,11 +36,14 @@ namespace VideoShare.Pages.Renderers
             builder.Append("</table></div>");
         }
 
-        public static void RenderBigView(Video video, StringBuilder builder, bool loggedIn)
+        public static void RenderBigView(Video video, StringBuilder builder, User loggedInUser, bool functionsAllowed = true)
         {
             int views = video.GetViews();
             User uploader = video.GetUploader();
             string categoryList = video.GetCategoriesListed();
+
+            bool loggedIn = (loggedInUser != null);
+            bool isOwner = (loggedInUser != null && loggedInUser.ID == uploader.ID);
 
             string upvoteHref = (loggedIn ? "href='javascript:doVote(\"upvote\", " + video.ID.ToString() + ")'" : string.Empty);
             string downvoteHref = (loggedIn ? "href='javascript:doVote(\"downvote\", " + video.ID.ToString() + ")'" : string.Empty);
@@ -77,6 +83,20 @@ namespace VideoShare.Pages.Renderers
                 builder.Append("<tr>");
                 builder.Append("<td colspan='2' style='margin-top: 10px'><p>Kategória: " + categoryList + "</p></td>");
                 builder.Append("</tr>");
+            }
+
+            if (functionsAllowed && (isOwner || loggedIn))
+            {
+                builder.Append("<tr><td colspan='2' style='margin-top: 10px'>");
+                if (isOwner)
+                {
+                    builder.Append("<div onclick='deleteVideo(" + video.ID.ToString() + ")' style='float: left; padding: 10px; background-color: #131313; cursor:pointer; border-radius: 5px'><a>Videó törlése</a></div>");
+                }
+                if (loggedIn)
+                {
+                    builder.Append("<div onclick='document.getElementById(\"listAdd\").style.removeProperty(\"visibility\")' style='float: left; margin-left: 2px; padding: 10px; background-color: #131313; cursor:pointer; border-radius: 5px'><a>Hozzáadás listához</a></div>");
+                }
+                builder.Append("</td></tr>");
             }
 
             builder.Append("</table>");
