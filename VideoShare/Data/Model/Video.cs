@@ -178,6 +178,6 @@ namespace VideoShare.Data.Model
 
             Global.Database.Delete<Video>(this);
         }
-        #endregion
-    }
+		#endregion
+	}
 }

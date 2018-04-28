@@ -88,6 +88,7 @@
     <Compile Include="Data\ObjectParser.cs" />
     <Compile Include="Data\SQLColumnAttribute.cs" />
     <Compile Include="Data\SQLTable.cs" />
+    <Compile Include="Data\VideoQuery.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -126,7 +127,7 @@
     <Compile Include="Pages\Profile.aspx.designer.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Renderers\VideoHTMLRenderer.cs" />
+    <Compile Include="Pages\VideoHTMLRenderer.cs" />
     <Compile Include="Pages\Services.aspx.cs">
       <DependentUpon>Services.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
