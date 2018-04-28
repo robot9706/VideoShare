@@ -58,5 +58,28 @@ namespace VideoShare.Data
 				return user.GetVideosDateOrdered(-1, max);
 			}
 		}
+
+		private const string SQL_Search = "select * from \"" + Video.Table + "\" where {0}";
+
+		public static List<Video> Search(string query)
+		{
+			string[] parts = query.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+			if (parts.Length == 0)
+				return null;
+
+			List<string> likes = new List<string>();
+			foreach(string part in parts)
+			{
+				likes.Add("LOWER(Title) like '%" + part + "%'");
+			}
+
+			string like = string.Join(" or ", likes);
+
+			using (OracleCommand command = Global.Database.CreateCommand(String.Format(SQL_Search, like)))
+			{
+				return Global.Database.Select<Video>(command);
+			}
+		}
 	}
 }

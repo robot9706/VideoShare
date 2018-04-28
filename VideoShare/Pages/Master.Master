@@ -7,6 +7,7 @@
     <title>Video share</title>
     <link rel="stylesheet" href="Content/Style.css" />
     <script src="Content/Main.js"></script>
+    <asp:Literal runat="server" ID="MasterHeadScript"></asp:Literal>
     <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
 <body>

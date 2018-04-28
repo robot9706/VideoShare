@@ -71,6 +71,7 @@
     <Content Include="Pages\Index.aspx" />
     <Content Include="Pages\Login.aspx" />
     <Content Include="Pages\Profile.aspx" />
+    <Content Include="Pages\Search.aspx" />
     <Content Include="Pages\Services.aspx" />
     <Content Include="Pages\Watch.aspx" />
     <Content Include="Web.config" />
@@ -126,6 +127,13 @@
     </Compile>
     <Compile Include="Pages\Profile.aspx.designer.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Search.aspx.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Search.aspx.designer.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\VideoHTMLRenderer.cs" />
     <Compile Include="Pages\Services.aspx.cs">

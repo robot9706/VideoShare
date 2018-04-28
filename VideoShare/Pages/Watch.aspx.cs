@@ -47,7 +47,7 @@ namespace VideoShare.Pages
             //Watched video
             if (loggedIn)
             {
-                ExtraScript.Text = "<script>window.onload=function(){setTimeout(function(){onVideoWatched(" + video.ID.ToString() + ")},5000);}</script>";
+                ExtraScript.Text = "<script>var ll=window.onload;window.onload=function(){setTimeout(function(){onVideoWatched(" + video.ID.ToString() + ")},5000);if(ll!=null)ll();}</script>";
             }
 
             //HTML rendering

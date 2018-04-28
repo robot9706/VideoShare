@@ -13,7 +13,12 @@ namespace VideoShare.Pages
         protected void Page_Load(object sender, EventArgs e)
         {
             RenderUserLogin();
-        }
+
+			if (Request.Params["s"] != null)
+			{
+				MasterHeadScript.Text = "<script>var ld=window.onload;window.onload=function(){document.getElementById('searchTextInput').value='" + Request.Params["s"] + "';if(ld!=null)ld();}</script>";
+			}
+		}
 
         private void RenderUserLogin()
         {

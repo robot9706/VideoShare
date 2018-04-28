@@ -156,7 +156,7 @@ namespace VideoShare.Pages
             //Header script
             if (isOwner)
             {
-                ExtraScript.Text = "<script>window.onload=function(){document.getElementById('userPanel').style.removeProperty('visibility');}</script>";
+                ExtraScript.Text = "<script>var ll=window.onload;window.onload=function(){document.getElementById('userPanel').style.removeProperty('visibility');if(ll!=null)ll();}</script>";
             }
         }
     }

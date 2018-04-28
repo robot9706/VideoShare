@@ -2,8 +2,11 @@
 <asp:Content ID="HeadContent" ContentPlaceHolderID="head" runat="server">
     <script src="Content/md5.js"></script>
     <script>
+        var ll = window.onload;
         window.onload = function()
         {
+            if (ll != null) ll();
+
             document.getElementById('loginBtn').addEventListener('click', function () {
                 var uname = document.getElementById('username').value;
                 var upw = document.getElementById('password').value;
