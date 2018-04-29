@@ -124,7 +124,12 @@ namespace VideoShare.Data.Model
             }
         }
 
-        public string GetCategoriesListed()
+		public List<VideoCategory> GetCategories()
+		{
+			return VideoCategory.GetForVideo(this);
+		}
+
+		public string GetCategoriesListed()
         {
             List<VideoCategory> catList = VideoCategory.GetForVideo(this);
 

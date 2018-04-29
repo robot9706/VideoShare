@@ -17,34 +17,41 @@ namespace VideoShare.Pages
         {
 			StringBuilder html = new StringBuilder();
 
+			List<Video> videos = null;
+
 			if (Session["User"] != null)
 			{
-				 //Ajánlás
+				//Ajánlás bejelentkezett felhasználónak
+				videos = VideoQuery.GetRandomSimilarVideos((User)Session["User"], 6);
+				Render(html, videos, "Ajánlott");
+			}
+			else
+			{
+				//Ajánlás
+				videos = VideoQuery.GetRandomVideos(6);
+				Render(html, videos, "Ajánlott");
 			}
 
 			//Legújabb videók
-			List<Video> videos = VideoQuery.GetLatestVideos(6);
+			videos = VideoQuery.GetLatestVideos(6);
 			Render(html, videos, "Legújabb videók");
 
 			//Legaktívabb feltöltő videói
 			videos = VideoQuery.GetMostActiveUploaderVideos(6);
-			if (videos.Count > 0)
-			{
-				Render(html, videos, "Legaktívabb feltöltő videói");
-			}
+			Render(html, videos, "Legaktívabb feltöltő videói");
 
 			//Legaktívabb kommentelő videói
 			videos = VideoQuery.GetMostActiveCommenterVideos(6);
-			if (videos.Count > 0)
-			{
-				Render(html, videos, "Legaktívabb kommentelő videói");
-			}
+			Render(html, videos, "Legaktívabb kommentelő videói");
 
 			ContentHTML.Text = html.ToString();
 		}
 
 		private void Render(StringBuilder html, List<Video> videoList, string title)
 		{
+			if (videoList == null || videoList.Count == 0)
+				return;
+
 			html.Append("<div class='panel' style='padding: 10px'><a class='panelText'>" + title + "</a><table style='width: 100%'>");
 			{
 				int rowCount = (int)Math.Ceiling((double)((float)videoList.Count / 6));

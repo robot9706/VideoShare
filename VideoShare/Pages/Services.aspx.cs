@@ -313,6 +313,13 @@ namespace VideoShare.Pages
             }
 
             Data.Model.View.AddView(v);
+
+			if (Session["User"] != null)
+			{
+				User user = (User)Session["User"];
+
+				UserView.UpdateUserViews(user, v);
+			}
         }
 
         private void CreatePlaylist(HttpRequest req)

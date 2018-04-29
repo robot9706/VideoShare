@@ -81,5 +81,28 @@ namespace VideoShare.Data
 				return Global.Database.Select<Video>(command);
 			}
 		}
+
+		private const string SQL_GetRandom = "select * from (select * from \"" + Video.Table + "\" order by DBMS_RANDOM.VALUE) where rownum<={0}";
+
+		public static List<Video> GetRandomVideos(int max)
+		{
+			using (OracleCommand command = Global.Database.CreateCommand(String.Format(SQL_GetRandom, max)))
+			{
+				return Global.Database.Select<Video>(command);
+			}
+		}
+
+		private const string SQL_GetRandomSimilar = "SELECT * from TABLE(SuggestPackage.SuggestVideos(:cuid, :cmaxrows))";
+
+		public static List<Video> GetRandomSimilarVideos(User forUser, int max)
+		{
+			using (OracleCommand command = Global.Database.CreateCommand(SQL_GetRandomSimilar))
+			{
+				command.Parameters.Add("cuid", forUser.ID);
+				command.Parameters.Add("cmaxrows", max);
+
+				return Global.Database.Select<Video>(command);
+			}
+		}
 	}
 }

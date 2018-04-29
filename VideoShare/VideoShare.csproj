@@ -82,6 +82,7 @@
     <Compile Include="Data\Model\Playlist.cs" />
     <Compile Include="Data\Model\PlaylistContent.cs" />
     <Compile Include="Data\Model\User.cs" />
+    <Compile Include="Data\Model\UserView.cs" />
     <Compile Include="Data\Model\Video.cs" />
     <Compile Include="Data\Model\VideoCategory.cs" />
     <Compile Include="Data\Model\VideoComment.cs" />
