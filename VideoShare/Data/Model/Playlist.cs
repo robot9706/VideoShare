@@ -26,8 +26,9 @@ namespace VideoShare.Data.Model
         #endregion
 
         #region Functions
-        private const string SQL_GetVideos = "select * from \"" + Video.Table + "\", \"" + PlaylistContent.Table + "\" where \"" + Video.Table + "\".ID=\"" + PlaylistContent.Table + 
-            "\".VideoID and \"" + PlaylistContent.Table + "\".PlaylistID=:plid order by \"" + Video.Table + "\".UploadTime desc";
+        private const string SQL_GetVideos = "select * from \"VIDEO\", \"PLAYLISTCONTENT\" " + 
+											 "where \"VIDEO\".ID=\"PLAYLISTCONTENT\".VideoID and \"PLAYLISTCONTENT\".PlaylistID=:plid " + 
+											 "order by \"VIDEO\".UploadTime desc";
 
         public List<Video> GetVideos()
         {
@@ -39,7 +40,7 @@ namespace VideoShare.Data.Model
             }
         }
 
-        private const string SQL_FindList = "select * from \"" + Playlist.Table + "\" where ID=:plid";
+        private const string SQL_FindList = "select * from \"PLAYLIST\" where ID=:plid";
 
         public static Playlist Find(int id)
         {
@@ -56,7 +57,7 @@ namespace VideoShare.Data.Model
             }
         }
 
-        private const string SQL_DeleteContent = "delete from \"" + PlaylistContent.Table + "\" where PlaylistID=:plid";
+        private const string SQL_DeleteContent = "delete from \"PLAYLISTCONTENT\" where PlaylistID=:plid";
 
         public void Delete()
         {
@@ -70,7 +71,7 @@ namespace VideoShare.Data.Model
             Global.Database.Delete<Playlist>(this);
         }
 
-        private const string SQL_DeleteContentWithID = "delete from \"" + PlaylistContent.Table + "\" where PlaylistID=:plid and VideoID=:vlid";
+        private const string SQL_DeleteContentWithID = "delete from \"PLAYLISTCONTENT\" where PlaylistID=:plid and VideoID=:vlid";
 
         public void DeleteFromList(Video video)
         {

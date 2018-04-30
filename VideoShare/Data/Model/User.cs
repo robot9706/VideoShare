@@ -33,7 +33,7 @@ namespace VideoShare.Data.Model
         #endregion
 
         #region Functions
-        private const string SQL_FindUser = "select * from \"" + Table + "\" where USERNAME=:uname and PASSWORDHASH=:pwh";
+        private const string SQL_FindUser = "select * from \"USER\" where USERNAME=:uname and PASSWORDHASH=:pwh";
 
         public static User FindUser(string username, string passwordHash)
         {
@@ -51,7 +51,7 @@ namespace VideoShare.Data.Model
             }
         }
 
-        private const string SQL_CheckName = "select * from \"" + Table + "\" where USERNAME=:uname";
+        private const string SQL_CheckName = "select * from \"USER\" where USERNAME=:uname";
 
         public static User GetUser(string username)
         {
@@ -68,7 +68,7 @@ namespace VideoShare.Data.Model
             }
         }
 
-        private const string SQL_GetByID = "select * from \"" + Table + "\" where ID=:unid";
+        private const string SQL_GetByID = "select * from \"USER\" where ID=:unid";
 
         public static User GetUserByID(int id)
         {
@@ -102,8 +102,9 @@ namespace VideoShare.Data.Model
             return null;
         }
 
-        private const string SQL_VideoCount = "select count(*) from \"" + Video.Table + "\" where UPLOADER=:cuid";
-        private const string SQL_ViewCount = "select sum(\"" + View.Table + "\".\"Views\") from \"" + View.Table + "\", \"" + Video.Table + "\" where \"" + View.Table + "\".VIDEOID=\"" + Video.Table + "\".ID and \"" + Video.Table + "\".Uploader=:cuid";
+        private const string SQL_VideoCount = "select count(*) from \"VIDEO\" where UPLOADER=:cuid";
+        private const string SQL_ViewCount = "select sum(\"VIEW\".\"Views\") from \"VIEW\", \"VIDEO\" " + 
+											 "where \"VIEW\".VIDEOID=\"VIDEO\".ID and \"VIDEO\".Uploader=:cuid";
 
         public Tuple<int, int> GetVideosAndViews()
         {
@@ -135,7 +136,7 @@ namespace VideoShare.Data.Model
             return new Tuple<int, int>(videos, views);
         }
 
-        private const string SQL_GetVideos = "select * from \"" + Video.Table + "\" where Uploader = :cuid order by UploadTime desc";
+        private const string SQL_GetVideos = "select * from \"VIDEO\" where Uploader = :cuid order by UploadTime desc";
 
         public List<Video> GetVideosDateOrdered()
         {
@@ -147,7 +148,7 @@ namespace VideoShare.Data.Model
             }
         }
 
-        private const string SQL_GetVideos2 = "select * from \"" + Video.Table + "\" where Uploader = :cuid and ID!=:nid and rownum<={0} order by UploadTime desc";
+        private const string SQL_GetVideos2 = "select * from \"VIDEO\" where Uploader = :cuid and ID!=:nid and rownum<={0} order by UploadTime desc";
 
         public List<Video> GetVideosDateOrdered(int except, int max)
         {
@@ -160,7 +161,7 @@ namespace VideoShare.Data.Model
             }
         }
 
-        private const string SQL_GetPlaylists = "select * from \"" + Playlist.Table + "\" where Creator = :cuid order by CreationDate desc";
+        private const string SQL_GetPlaylists = "select * from \"PLAYLIST\" where Creator = :cuid order by CreationDate desc";
 
         public List<Playlist> GetPlaylists()
         {

@@ -23,7 +23,7 @@ namespace VideoShare.Data.Model
         #endregion
 
         #region Functions
-        private const string SQL_FindRow = "select * from \"" + Table + "\" where VideoID=:vid and \"Date\"=:cdate";
+        private const string SQL_FindRow = "select * from \"VIEW\" where VideoID=:vid and \"Date\"=:cdate";
 
         public static void AddView(Video video)
         {

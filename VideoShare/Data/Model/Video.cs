@@ -48,7 +48,7 @@ namespace VideoShare.Data.Model
             return "Content/placeholder.png";
         }
 
-        private const string SQL_SumViews = "select sum(\"" + View.Table + "\".\"Views\") from \"" + View.Table + "\" where \"" + View.Table + "\".VIDEOID=:vdid";
+        private const string SQL_SumViews = "select sum(\"VIEW\".\"Views\") from \"VIEW\" where \"VIEW\".VIDEOID=:vdid";
 
         public int GetViews()
         {
@@ -68,7 +68,7 @@ namespace VideoShare.Data.Model
             return time;
         }
 
-        private const string SQL_FindUser = "select * from \"" + User.Table + "\" where ID=:vuid";
+        private const string SQL_FindUser = "select * from \"USER\" where ID=:vuid";
 
         public User GetUploader()
         {
@@ -102,7 +102,7 @@ namespace VideoShare.Data.Model
             }
         }
 
-        private const string SQL_AddVote = "update \"" + Video.Table + "\" set {0}={0}+1 where ID=:vuid";
+        private const string SQL_AddVote = "update \"VIDEO\" set {0}={0}+1 where ID=:vuid";
 
         public bool Upvote()
         {
@@ -146,10 +146,10 @@ namespace VideoShare.Data.Model
             return String.Join(", ", names);
         }
 
-        private const string SQL_Delete1 = "delete from \"" + PlaylistContent.Table + "\" where VideoID=:vdid";
-        private const string SQL_Delete2 = "delete from \"" + VideoCategory.Table + "\" where VideoID=:vdid";
-        private const string SQL_Delete3 = "delete from \"" + VideoComment.Table + "\" where VideoID=:vdid";
-        private const string SQL_Delete4 = "delete from \"" + View.Table + "\" where VideoID=:vdid";
+        private const string SQL_Delete1 = "delete from \"PLAYLISTCONTENT\" where VideoID=:vdid";
+        private const string SQL_Delete2 = "delete from \"VIDEOCATEGORY\" where VideoID=:vdid";
+        private const string SQL_Delete3 = "delete from \"VIDEOCOMMENT\" where VideoID=:vdid";
+        private const string SQL_Delete4 = "delete from \"VIEW\" where VideoID=:vdid";
 
         public void Delete()
         {

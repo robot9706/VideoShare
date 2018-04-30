@@ -20,7 +20,7 @@ namespace VideoShare.Data.Model
         #endregion
 
         #region Functions
-        private const String SQL_GetCategory = "select * from \"" + Table + "\" where \"VIDEOID\"=:vdid";
+        private const String SQL_GetCategory = "select * from \"VIDEOCATEGORY\" where \"VIDEOID\"=:vdid";
 
         public static List<VideoCategory> GetForVideo(Video v)
         {

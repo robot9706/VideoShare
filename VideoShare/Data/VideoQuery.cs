@@ -9,7 +9,7 @@ namespace VideoShare.Data
 {
 	public class VideoQuery
 	{
-		private const string SQL_GetLatest = "select * from \"" + Video.Table + "\" where rownum<={0} order by UploadTime desc";
+		private const string SQL_GetLatest = "select * from \"VIDEO\" where rownum<={0} order by UploadTime desc";
 
 		public static List<Video> GetLatestVideos(int max)
 		{
@@ -19,7 +19,7 @@ namespace VideoShare.Data
 			}
 		}
 
-		private const string SQL_GetMostActiveUploader = "select \"" + Video.Table + "\".Uploader from \"" + Video.Table + "\" group by Uploader order by count(ID) desc";
+		private const string SQL_GetMostActiveUploader = "select \"VIDEO\".Uploader from \"VIDEO\" group by Uploader order by count(ID) desc";
 
 		public static List<Video> GetMostActiveUploaderVideos(int max)
 		{
@@ -39,7 +39,7 @@ namespace VideoShare.Data
 			}
 		}
 
-		private const string SQL_GetMostActiveCommenter = "select \"" + VideoComment.Table + "\".UserID from \"" + VideoComment.Table + "\" group by UserID order by count(*) desc";
+		private const string SQL_GetMostActiveCommenter = "select \"VIDEOCOMMENT\".UserID from \"VIDEOCOMMENT\" group by UserID order by count(*) desc";
 
 		public static List<Video> GetMostActiveCommenterVideos(int max)
 		{
@@ -59,7 +59,7 @@ namespace VideoShare.Data
 			}
 		}
 
-		private const string SQL_Search = "select * from \"" + Video.Table + "\" where {0}";
+		private const string SQL_Search = "select * from \"VIDEO\" where {0}";
 
 		public static List<Video> Search(string query)
 		{
@@ -82,7 +82,7 @@ namespace VideoShare.Data
 			}
 		}
 
-		private const string SQL_GetRandom = "select * from (select * from \"" + Video.Table + "\" order by DBMS_RANDOM.VALUE) where rownum<={0}";
+		private const string SQL_GetRandom = "select * from (select * from \"VIDEO\" order by DBMS_RANDOM.VALUE) where rownum<={0}";
 
 		public static List<Video> GetRandomVideos(int max)
 		{

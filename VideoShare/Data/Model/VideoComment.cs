@@ -26,7 +26,7 @@ namespace VideoShare.Data.Model
         #endregion
 
         #region Functions
-        private const string SQL_FindComments = "select * from \"" + VideoComment.Table + "\" where VIDEOID=:vdid order by \"Date\"";
+        private const string SQL_FindComments = "select * from \"VIDEOCOMMENT\" where VIDEOID=:vdid order by \"Date\"";
 
         public static List<VideoComment> GetComments(int vid)
         {

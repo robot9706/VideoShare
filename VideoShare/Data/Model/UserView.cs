@@ -20,7 +20,7 @@ namespace VideoShare.Data.Model
 		#endregion
 
 		#region Functions
-		private const string SQL_GetViewedIDs = "select * from \"" + Table + "\" where UserID=:cuid";
+		private const string SQL_GetViewedIDs = "select * from \"USERVIEWS\" where UserID=:cuid";
 
 		public static List<UserView> GetViews(User user)
 		{
