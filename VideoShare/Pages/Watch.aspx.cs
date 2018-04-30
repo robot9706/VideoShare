@@ -45,10 +45,7 @@ namespace VideoShare.Pages
             bool loggedIn = (Session["User"] != null);
 
             //Watched video
-            if (loggedIn)
-            {
-                ExtraScript.Text = "<script>var ll=window.onload;window.onload=function(){setTimeout(function(){onVideoWatched(" + video.ID.ToString() + ")},5000);if(ll!=null)ll();}</script>";
-            }
+            ExtraScript.Text = "<script>var ll=window.onload;window.onload=function(){setTimeout(function(){onVideoWatched(" + video.ID.ToString() + ")},5000);if(ll!=null)ll();}</script>";
 
             //HTML rendering
             StringBuilder latestVideo = new StringBuilder();

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VideoShare.Data;
 using VideoShare.Data.Model;
+using VideoShare.Pages.Renderers;
 
 namespace VideoShare.Pages
 {
@@ -65,8 +68,14 @@ namespace VideoShare.Pages
                 case "addvidtolist":
                     AddVideoToList(req);
                     break;
+				case "catview":
+					GenerateCategoryViewHTML(req);
+					break;
+				case "dateview":
+					GenerateDateViewHTML(req);
+					break;
 
-                default:
+				default:
                     Response.Write("Unknown function!");
                     return;
             }
@@ -314,7 +323,7 @@ namespace VideoShare.Pages
 
             Data.Model.View.AddView(v);
 
-			if (Session["User"] != null)
+			if (Session["User"] != null) //If a user is logged in
 			{
 				User user = (User)Session["User"];
 
@@ -501,5 +510,90 @@ namespace VideoShare.Pages
                 Response.Write("Hiba!");
             }
         }
-    }
+
+		private void GenerateCategoryViewHTML(HttpRequest req)
+		{
+			if (req.Params["c"] == null || req.Params["t"] == null)
+			{
+				Response.Write("Hiba!");
+				return;
+			}
+
+			string cat = req.Params["c"];
+			string filterText = req.Params["t"];
+
+			int? categoryID = null;
+			int parse;
+			if (cat != "all" && Int32.TryParse(cat, out parse))
+			{
+				categoryID = parse;
+			}
+
+			VideoQuery.CategoryFilterType filter = VideoQuery.CategoryFilterType.Time;
+			Enum.TryParse<VideoQuery.CategoryFilterType>(filterText, out filter);
+
+			List<Video> videos = VideoQuery.GetFilteredCategoryVideos(categoryID, filter, 6);
+
+			StringBuilder html = new StringBuilder();
+			VideoHTMLRenderer.RenderVideoListTable(html, videos);
+
+			Response.Clear();
+
+			Response.StatusCode = 200;
+			Response.Write(html.ToString());
+		}
+
+		private void GenerateDateViewHTML(HttpRequest req)
+		{
+			if (req.Params["t"] == null)
+			{
+				Response.Write("Hiba!");
+				return;
+			}
+
+			string filterText = req.Params["t"];
+
+			VideoQuery.DateFilterType filter = VideoQuery.DateFilterType.Day;
+			Enum.TryParse<VideoQuery.DateFilterType>(filterText, out filter);
+
+			List<Video> videos = VideoQuery.GetDatedCategoryVideos(filter, 6);
+
+			DateTime today = DateTime.Now.Date;
+			List<string> lookupNames = new List<string>(6);
+			switch (filter)
+			{
+				case VideoQuery.DateFilterType.Day:
+					lookupNames.Add("Ma");
+					lookupNames.Add("Tegnap");
+					lookupNames.Add(today.AddDays(-2).ToString("yyyy-MM-dd"));
+					lookupNames.Add(today.AddDays(-3).ToString("yyyy-MM-dd"));
+					lookupNames.Add(today.AddDays(-4).ToString("yyyy-MM-dd"));
+					lookupNames.Add(today.AddDays(-5).ToString("yyyy-MM-dd"));
+					break;
+				case VideoQuery.DateFilterType.Week:
+					for (int x = 0; x < 6; x++)
+					{
+						lookupNames.Add(today.AddDays(-7 * x).ToString("yyyy-MM-dd"));
+					}
+					break;
+				case VideoQuery.DateFilterType.Month:
+					for (int x = 0; x < 6; x++)
+					{
+						lookupNames.Add(today.AddMonths(-x).ToString("yyyy-MM-dd"));
+					}
+					break;
+			}
+
+			StringBuilder html = new StringBuilder();
+			VideoHTMLRenderer.RenderVideoListTable(html, videos, new Func<int, string>((int index) =>
+			{
+				return lookupNames[index];
+			}));
+
+			Response.Clear();
+
+			Response.StatusCode = 200;
+			Response.Write(html.ToString());
+		}
+	}
 }

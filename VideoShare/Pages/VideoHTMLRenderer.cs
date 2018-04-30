@@ -9,7 +9,7 @@ namespace VideoShare.Pages.Renderers
 {
     public class VideoHTMLRenderer
     {
-        public static void RenderThumbnail(Video video, StringBuilder builder, bool editable = false, Playlist list = null)
+        public static void RenderThumbnail(Video video, StringBuilder builder, bool editable = false, Playlist list = null, string topRow = null)
         {
             int views = video.GetViews();
             User uploader = video.GetUploader();
@@ -18,6 +18,13 @@ namespace VideoShare.Pages.Renderers
             string deleteButton = (editable ? "<a style='position: absolute;left:10px;top:5px;cursor:pointer' onclick='" + deleteFunction + "'>X</a>" : string.Empty);
 
             builder.Append("<div style='width: 185px; margin-left:auto; margin-right: auto'><table style='width: 100%'>");
+
+			if (!string.IsNullOrEmpty(topRow))
+			{
+				builder.Append("<tr><td colspan='2' style='text-align:center'>");
+				builder.Append("<a>" + topRow + "</a>");
+				builder.Append("</td></tr>");
+			}
 
             builder.Append("<tr>");
             builder.Append("<td colspan='2' style='text-align: center'><a href='Watch.aspx?v=" + video.ID.ToString() + "'><div style='position: relative'><img style='cursor: pointer' src=\"" + video.GetThumbnailLink() + "\" />" + deleteButton + "</div></td>");
@@ -103,5 +110,57 @@ namespace VideoShare.Pages.Renderers
 
             builder.Append("</div>");
         }
-    }
+
+		public static void RenderVideoList(StringBuilder html, List<Video> videoList, string title)
+		{
+			if (videoList == null || videoList.Count == 0)
+				return;
+
+			html.Append("<div class='panel' style='padding: 10px'><a class='panelText'>" + title + "</a>");
+			{
+				RenderVideoListTable(html, videoList);
+			}
+			html.Append("</div>");
+		}
+
+		public static void RenderVideoListTable(StringBuilder html, List<Video> videoList, Func<int, string> TopRowText = null)
+		{
+			html.Append("<table style='width: 100%'>");
+			{
+				int rowCount = (int)Math.Ceiling((double)((float)videoList.Count / 6));
+
+				for (int row = 0; row < rowCount; row++)
+				{
+					int offset = row * 6;
+
+					html.Append("<tr>");
+					{
+						for (int x = offset; x < offset + 6; x++)
+						{
+							if (x >= videoList.Count)
+							{
+								html.Append("<td style='width: 16%'></td>");
+							}
+							else
+							{
+								html.Append("<td style='width: 16%'>");
+
+								string topRow = null;
+								if(TopRowText != null)
+								{
+									topRow = TopRowText(x);
+								}
+
+								RenderThumbnail(videoList[x], html, false, null, topRow);
+
+								html.Append("</td>");
+							}
+						}
+					}
+					html.Append("</tr>");
+				}
+			}
+			html.Append("</table>");
+		}
+	}
 }

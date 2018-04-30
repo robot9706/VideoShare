@@ -104,5 +104,147 @@ namespace VideoShare.Data
 				return Global.Database.Select<Video>(command);
 			}
 		}
+
+		#region Legnézetebb és legújabb videók
+		private const string SQL_FilterCategoryByTimeAll = "select \"VIDEO\".* " +
+														"from \"VIDEO\" " +
+														"where rownum<={0} " +
+														"order by \"VIDEO\".UploadTime desc";
+
+		private const string SQL_FilterCategoryByTime = "select \"VIDEO\".* " +
+														"from \"VIDEO\", \"VIDEOCATEGORY\" " +
+														"where \"VIDEO\".ID=\"VIDEOCATEGORY\".VideoID and rownum<={0} and \"VIDEOCATEGORY\".CategoryID=:fcat " +
+														"order by \"VIDEO\".UploadTime desc";
+
+		private const string SQL_FilterCategoryByViewsAll = "select * from (" +
+																"select \"VIDEO\".ID " +
+																"from \"VIDEO\", \"VIEW\" " +
+																"where \"VIEW\".VideoID=\"VIDEO\".ID " +
+																"group by \"VIDEO\".ID " +
+																"order by sum(\"VIEW\".\"Views\") desc " +
+															") where rownum<={0}";
+
+		private const string SQL_FilterCategoryByViews = "select * from (" +
+															"select \"VIDEO\".ID " +
+															"from \"VIDEO\", \"VIEW\", \"VIDEOCATEGORY\" " +
+															"where \"VIEW\".VideoID=\"VIDEO\".ID and \"VIDEOCATEGORY\".VideoID=\"VIDEO\".ID and \"VIDEOCATEGORY\".CategoryID=:fcat " +
+															"group by \"VIDEO\".ID " +
+															"order by sum(\"VIEW\".\"Views\") desc " +
+														 ") where rownum<={0}";
+
+		public enum CategoryFilterType
+		{
+			Time,
+			Views
+		}
+
+		public static List<Video> GetFilteredCategoryVideos(int? category, CategoryFilterType filter, int max)
+		{
+			string queryString = string.Empty;
+			switch(filter)
+			{
+				case CategoryFilterType.Time:
+					queryString = String.Format((category.HasValue ? SQL_FilterCategoryByTime : SQL_FilterCategoryByTimeAll), max);
+					break;
+				case CategoryFilterType.Views:
+					queryString = String.Format((category.HasValue ? SQL_FilterCategoryByViews : SQL_FilterCategoryByViewsAll), max);
+					break;
+
+				default:
+					throw new Exception("Unknown filter");
+			}
+
+			using (OracleCommand command = Global.Database.CreateCommand(queryString))
+			{
+				if (category.HasValue)
+				{
+					command.Parameters.Add("fcat", category.Value);
+				}
+
+				if (filter == CategoryFilterType.Time)
+				{
+					return Global.Database.Select<Video>(command);
+				}
+				else
+				{
+					using (OracleDataReader reader = command.ExecuteReader())
+					{
+						List<Video> videos = new List<Video>();
+
+						while (reader.Read())
+						{
+							int vID = reader.GetInt32(0);
+
+							videos.Add(Video.FindVideo(vID));
+						}
+
+						return videos;
+					}
+				}
+			}
+		}
+		#endregion
+
+		#region Legnépszerűbb videók felbontva
+		public enum DateFilterType
+		{
+			Day,
+			Week,
+			Month
+		}
+
+		private const string SQL_GetDatedVideos = "select * from (" +
+													"select \"VIDEO\".ID " +
+													"from \"VIDEO\", \"VIEW\" where \"VIEW\".VideoID = \"VIDEO\".ID and \"VIEW\".\"Date\" between to_date('{0}', 'yyyy-mm-dd') and to_date('{1}', 'yyyy-mm-dd') " +
+													"group by \"VIDEO\".ID order by sum(\"VIEW\".\"Views\") desc " +
+												  ") where rownum<=1";
+
+		public static List<Video> GetDatedCategoryVideos(DateFilterType filter, int max)
+		{
+			List<Video> videos = new List<Model.Video>();
+
+			DateTime begin = DateTime.Now;
+			DateTime end;
+
+			for (int x = 0; x < max; x++)
+			{
+				end = DoOffsetTime(begin, filter);
+
+				using (OracleCommand command = Global.Database.CreateCommand(String.Format(SQL_GetDatedVideos, end.Date.ToString("yyyy-MM-dd"), begin.Date.ToString("yyyy-MM-dd"))))
+				{
+					using (OracleDataReader reader = command.ExecuteReader())
+					{
+						if (reader.HasRows && reader.Read())
+						{
+							int vID = reader.GetInt32(0);
+
+							videos.Add(Video.FindVideo(vID));
+						}
+					}
+				}
+
+				begin = DoOffsetTime(begin, filter);
+			}
+
+			return videos;
+		}
+
+		private static DateTime DoOffsetTime(DateTime time, DateFilterType filter)
+		{
+			switch (filter)
+			{
+				case DateFilterType.Day:
+					return time.AddDays(-1);
+
+				case DateFilterType.Week:
+					return time.AddDays(-7);
+
+				case DateFilterType.Month:
+					return time.AddMonths(-1);
+			}
+
+			return time;
+		}
+		#endregion
 	}
 }
