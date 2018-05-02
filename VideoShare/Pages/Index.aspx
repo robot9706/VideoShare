@@ -65,7 +65,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
-    <div style="width: 70%; margin-left: auto; margin-right: auto;">
+    <div style="width: 80%; margin-left: auto; margin-right: auto;">
         <asp:Literal runat="server" ID="ContentHTML"></asp:Literal>
         <div class='panel' style='padding: 10px'>
             <table style="width: 100%">

@@ -257,8 +257,8 @@ namespace VideoShare.Pages
                 return;
             }
 
-            string title = request.Params["t"];
-            string desc = request.Params["d"];
+            string title = HttpUtility.UrlDecode(request.Params["t"]);
+            string desc = HttpUtility.UrlDecode(request.Params["d"]);
 
             if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(desc))
             {

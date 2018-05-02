@@ -14,7 +14,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="body" runat="server">
-     <div style="width: 70%; margin-left: auto; margin-right: auto;">
+     <div style="width: 80%; margin-left: auto; margin-right: auto;">
         <asp:Literal runat="server" ID="ContentHTML"></asp:Literal>
     </div>
 </asp:Content>

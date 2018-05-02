@@ -47,7 +47,7 @@
                 return;
             }
 
-            var url = "Services.aspx?f=upload&t=" + title + "&d=" + desc + "&c=";
+            var url = "Services.aspx?f=upload&t=" + encodeURIComponent(title) + "&d=" + encodeURIComponent(desc) + "&c=";
 
             var cat = false;
             var catDiv = document.getElementById('catList');
@@ -136,7 +136,7 @@
     <asp:Literal runat="server" ID="ExtraScript"></asp:Literal>
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="body" runat="server">
-    <div style="width: 70%; margin-left: auto; margin-right: auto;">
+    <div style="width: 80%; margin-left: auto; margin-right: auto;">
         <table style="width: 100%;">
             <tr style="height: 400px">
                 <td style="width: 70%">
