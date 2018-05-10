@@ -104,7 +104,9 @@ namespace VideoShare.Pages
             {
                 List<Video> listVideos = list.GetVideos();
 
-                html.Append("<div class='profilePanel' style='padding: 10px'><a class='profileText'>" + list.Title + "</a><a class='profileTextSmall' style='margin-left: 10px'>Létrehozva: " + list.CreationDate.ToString("yyyy-MM-dd HH:mm:ss") + ", Videók: " + listVideos.Count.ToString() + "</a><div style='background-color:#323232; float:right; padding: 2px; cursor: pointer' onclick='deleteList(" + list.ID.ToString() + ")'><a>Törlés</a></div><table style='width: 100%'>");
+				string deleteButtonHtml = (isOwner ? "<div style='background-color:#323232; float:right; padding: 2px; cursor: pointer' onclick='deleteList(" + list.ID.ToString() + ")'><a>Törlés</a></div>" : string.Empty);
+
+				html.Append("<div class='profilePanel' style='padding: 10px'><a class='profileText'>" + list.Title + "</a><a class='profileTextSmall' style='margin-left: 10px'>Létrehozva: " + list.CreationDate.ToString("yyyy-MM-dd HH:mm:ss") + ", Videók: " + listVideos.Count.ToString() + "</a>" + deleteButtonHtml + "<table style='width: 100%'>");
                 {
                     int rowCount = (int)Math.Ceiling((double)((float)listVideos.Count / 6));
 
