@@ -80,7 +80,14 @@ namespace VideoShare.Data
 
                 if (value is DBNull)
                 {
-                    typeChangedValue = Activator.CreateInstance(prop.Value.Field.FieldType);
+					if (prop.Value.Field.FieldType.Equals(typeof(string)))
+					{
+						typeChangedValue = string.Empty;
+					}
+					else
+					{
+						typeChangedValue = Activator.CreateInstance(prop.Value.Field.FieldType);
+					}
                 }
                 else
                 {

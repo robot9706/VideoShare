@@ -74,6 +74,9 @@ namespace VideoShare.Pages
 				case "dateview":
 					GenerateDateViewHTML(req);
 					break;
+				case "udesc":
+					UpdateUserDescription(req);
+					break;
 
 				default:
                     Response.Write("Unknown function!");
@@ -594,6 +597,35 @@ namespace VideoShare.Pages
 
 			Response.StatusCode = 200;
 			Response.Write(html.ToString());
+		}
+
+		private void UpdateUserDescription(HttpRequest request)
+		{
+			if (request.Params["d"] == null)
+			{
+				Response.Write("Hiba!");
+				return;
+			}
+
+			if (Session["User"] == null)
+			{
+				Response.Write("Hiba!");
+				return;
+			}
+
+			string desc = HttpUtility.UrlDecode(request.Params["d"]);
+
+			User user = (User)Session["User"];
+			user.Info = desc;
+
+			if (Global.Database.Update<User>(user))
+			{
+				Response.Write("ok");
+			}
+			else
+			{
+				Response.Write("Hiba az adatok frissítése közben!");
+			}
 		}
 	}
 }

@@ -181,3 +181,24 @@ function addVideoToList(video, list)
     request.open("POST", url, true);
     request.send(null);
 }
+
+function updateUserDesc(nDesc)
+{
+    var url = "Services.aspx?f=udesc&d=" + encodeURIComponent(nDesc);
+
+    url = encodeURI(url);
+
+    var request = new XMLHttpRequest();
+    request.onload = function () {
+        if (this.readyState == 4) {
+            if (this.responseText == "ok") {
+                window.location.reload();
+            } else {
+                alert(this.responseText);
+            }
+        }
+    }
+
+    request.open("POST", url, true);
+    request.send(null);
+}

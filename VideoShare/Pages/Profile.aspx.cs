@@ -158,7 +158,11 @@ namespace VideoShare.Pages
             //Header script
             if (isOwner)
             {
-                ExtraScript.Text = "<script>var ll=window.onload;window.onload=function(){document.getElementById('userPanel').style.removeProperty('visibility');if(ll!=null)ll();}</script>";
+				string descEditAllowed = "false";
+				if (isOwner)
+					descEditAllowed = "true";
+
+                ExtraScript.Text = "<script>_isDescEditable=" + descEditAllowed + ";var ll=window.onload;window.onload=function(){document.getElementById('userPanel').style.removeProperty('visibility');if(ll!=null)ll();}</script>";
             }
         }
     }

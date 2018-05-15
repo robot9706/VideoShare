@@ -132,6 +132,51 @@
             request.open("POST", url, true);
             request.send(null);
         }
+
+        var _isDescEditable = false;
+        var _isDescEditing = false;
+        function tryDescEdit()
+        {
+            if (!_isDescEditable)
+                return;
+
+            if (_isDescEditing) {
+                var d = document.getElementById('profDescEdit');
+                var td = document.getElementById('descEditInp');
+                var dText = td.value;
+
+                d.innerHTML = "<a id='profDesc'></a>";
+
+                document.getElementById('profDesc').innerHTML = dText;
+
+                _isDescEditing = false;
+            }
+            else {
+                var d = document.getElementById('profDescEdit');
+                var descA = document.getElementById('profDesc');
+
+                var dText = descA.innerHTML;
+                
+                d.innerHTML = "<textarea style='width: 100%' type='text' id='descEditInp'></textarea></br><input type='button' value='Mentés' onclick='saveDescEdit()'/>";
+                document.getElementById('descEditInp').value = dText;
+
+                _isDescEditing = true;
+            }
+        }
+
+        function saveDescEdit()
+        {
+            if (!_isDescEditable)
+                return;
+
+            if (_isDescEditing)
+            {
+                var td = document.getElementById('descEditInp');
+                var dText = td.value;
+
+                updateUserDesc(dText);
+            }
+        }
     </script>
     <asp:Literal runat="server" ID="ExtraScript"></asp:Literal>
 </asp:Content>
@@ -152,7 +197,11 @@
                         <a class="profileText">Csatlakozott: <asp:Literal ID="Profile_JoinDate" runat="server"></asp:Literal></a><br />
                         <a class="profileText">Videók: <asp:Literal ID="Profile_VideoCount" runat="server"></asp:Literal></a><br />
                         <a class="profileText">Nézettség: <asp:Literal ID="Profile_ViewCount" runat="server"></asp:Literal></a><br />
-                        <a class="profileText">Leírás: <asp:Literal ID="Profile_Desc" runat="server"></asp:Literal></a><br />
+
+                        <a class="profileText" style="cursor: pointer" onclick="tryDescEdit();">Leírás: </a>
+                        <div id="profDescEdit"> <a id="profDesc"><asp:Literal ID="Profile_Desc" runat="server"></asp:Literal></a> </div>
+                        <br />
+
                     </div>
                     <div id="userPanel" class="profilePanel" style="padding-top: 20px; padding-bottom: 20px; visibility: hidden">
                         <div style='width: 90%; margin-left: auto; margin-right: auto; background-color: #323232; text-align: center; cursor: pointer; border-radius: 5px' onclick="document.getElementById('newVideo').style.removeProperty('visibility');">

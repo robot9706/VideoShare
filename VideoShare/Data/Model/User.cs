@@ -96,8 +96,11 @@ namespace VideoShare.Data.Model
             user.Info = "";
             user.RegistrationDate = DateTime.Now;
 
-            if (Global.Database.Insert<User>(user))
-                return user;
+			if (Global.Database.Insert<User>(user))
+			{
+				int newID = Global.Database.GetSequenceCurrentID<User>();
+				return User.GetUserByID(newID);
+			}
 
             return null;
         }
